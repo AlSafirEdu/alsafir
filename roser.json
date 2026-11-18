@@ -1,0 +1,19 @@
+{
+ "v": 1,
+ "salt": "53cb22f93cfce4e3",
+ "tp": "bcd98f5bebc6316bb7f962bbfe8fe6e73471bd3da39f57863cb66a87e9bc92d1",
+ "cfg": {},
+ "classes": [
+  {
+   "id": "5E42Z4",
+   "name": "محموعة السبت",
+   "sched": null,
+   "students": [
+    {
+     "h": "6ee8214664d8c740ce42d3ee57e4540e2831cbd766dfcd980a688f52d662cfe8",
+     "n": "محمد رأفت السيد عرابي"
+    }
+   ]
+  }
+ ]
+}
