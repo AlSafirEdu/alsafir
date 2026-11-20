@@ -418,7 +418,7 @@ const SN={1:'الفصل الدراسي الأول',2:'الفصل الدراسي 
 function pickSem(n){SEM=n;loadCfg();applyCfg();U.length=0;U.push(...(n===1?S1:S2));un.length=0;un.push(...(n===1?UN1:UN2));sel=null;qi=0;sc=0;done=false;document.querySelector('header p').textContent='رفيقك في مادة التاريخ – الصف الثاني الثانوي – '+SN[n];show(firstVis())}
 function home(){document.querySelector('header p').textContent='رفيقك في مادة التاريخ – الصف الثاني الثانوي';document.getElementById('nv').hidden=true;
 const S=[1,2].filter(n=>on('s'+n));
-app.innerHTML='<div class="hm"><h2>اختر الفصل الدراسي</h2><p class="mute" style="margin:0 0 10px">'+(PREV?'وضع المعاينة (معلم)':ME?'مرحبًا '+esc(ME.name):'')+'</p>'+(S.length?S.map(n=>`<button class="sem" data-s="${n}"><i>${n==1?'١':'٢'}</i>${SN[n]}<small>الدروس · اختبر نفسك · التدريبات والتقييمات</small></button>`).join(''):'<p class="mute">لم يُتح معلمك أي محتوى بعد.</p>')+''+(ME?'<button class="go" id="rp" style="margin-top:14px">إرسال تقرير نتائجي للمعلم</button> ':'')+'<button class="go" id="ex" style="background:var(--ink);margin-top:14px">'+(PREV?'العودة للوحة المعلم':'تسجيل الخروج')+'</button></div>';
+app.innerHTML='<div class="hm"><h2>اختر الفصل الدراسي</h2><p class="mute" style="margin:0 0 10px">'+(PREV?'وضع المعاينة: ترى ما سيراه الطلاب بحسب إعداداتك (قبل رفع roster.json)':ME?'مرحبًا '+esc(ME.name):'')+'</p>'+(S.length?S.map(n=>`<button class="sem" data-s="${n}"><i>${n==1?'١':'٢'}</i>${SN[n]}<small>الدروس · اختبر نفسك · التدريبات والتقييمات</small></button>`).join(''):'<p class="mute">لم يُتح معلمك أي محتوى بعد.</p>')+''+(ME?'<button class="go" id="rp" style="margin-top:14px">إرسال تقرير نتائجي للمعلم</button> ':'')+'<button class="go" id="ex" style="background:var(--ink);margin-top:14px">'+(PREV?'العودة للوحة المعلم':'تسجيل الخروج')+'</button></div>';
 app.querySelectorAll('.sem[data-s]').forEach(b=>b.onclick=()=>pickSem(+b.dataset.s));
 {const r=document.getElementById('rp');if(r)r.onclick=sendReport}document.getElementById('ex').onclick=()=>{if(PREV){PREV=false;teacherPage()}else{ME=null;try{localStorage.removeItem('alsafir-me')}catch(e){}gate()}}}
 /* ===== النسخة المستقلة (GitHub Pages): دخول بالكود ومتابعة بدون خادم ===== */
@@ -454,12 +454,12 @@ document.getElementById('nx').onclick=()=>{ST.qi++;evRun()}})}
 const loadEv=()=>{EV=LS.get('alsafir-ev-'+(ME?H12(ME.h):'guest'),{})};
 const examOpen=()=>PREV||!SCHED||!SCHED.from||(Date.now()>=SCHED.from&&Date.now()<=SCHED.to);
 function closed(){const t=SCHED,f=x=>new Date(x).toLocaleString('ar-EG',{dateStyle:'full',timeStyle:'short'});app.innerHTML='<div class="q"><h3>قيّم نفسك</h3><p>'+(Date.now()<t.from?'يفتح الاختبار في: '+f(t.from)+'، ويُغلق في: '+f(t.to)+'.':'انتهى موعد الاختبار ('+f(t.to)+').')+'</p></div>'}
-const on=k=>PREV||CFG[k]!==false;
+const on=k=>CFG[k]!==false;
 
 async function loadCfg(){CFG=ROSTER.cfg||{};const c=(ROSTER.classes||[]).find(x=>ME&&x.id===ME.cls);SCHED=c&&c.sched||null}
 function applyCfg(){[['lessons','ls'],['quiz','qz'],['train','tr'],['self','se']].forEach(([v,k])=>{document.querySelector('nav [data-v='+v+']').hidden=!on(k)})}
 const firstVis=()=>{const f=[['lessons','ls'],['quiz','qz'],['train','tr'],['self','se']].find(x=>on(x[1]));return f?f[0]:'home'};
-const hid=(sec,ui,li)=>!PREV&&((CFG.hl||{})[sec]||[]).includes(SEM+'-'+ui+'-'+li);
+const hid=(sec,ui,li)=>((CFG.hl||{})[sec]||[]).includes(SEM+'-'+ui+'-'+li);
 function filt(sec){let ui=-1,li=-1,U2=[];[...app.children].forEach(el=>{if(el.tagName==='H2'&&el.textContent.trim().startsWith('الوحدة')){ui++;li=-1;U2[ui]={h:[el],n:0,t:0};return}
 if(ui<0)return;if(el.tagName==='P'&&li===-1&&U2[ui].t===0&&U2[ui].h.length===1){U2[ui].h.push(el);return}
 if(el.matches('section.lesson,div.q')){li++;U2[ui].t++;if(hid(sec,ui,li))el.remove();else U2[ui].n++}});
